@@ -14,6 +14,9 @@ public final class Connect {
 	private Statement st;
 	private static Connect connect;
 	
+	// Apabila terdapat kesamaan, Class Connect.java ini merupakan 
+	// Template yang diberikan dari aslab untuk connect ke Database MySql
+	
 	/**
 	* Constructor for Connect class
 	* <br>

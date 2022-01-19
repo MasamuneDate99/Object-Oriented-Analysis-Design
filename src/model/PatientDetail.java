@@ -16,7 +16,6 @@ public class PatientDetail {
 	private String table = "patient_detail";
 	private Connect con = Connect.getConnection();
 	
-
 	public PatientDetail(int patientDetailID, int patientID, int employeeID, String symptom, Date checkDate) {
 		PatientDetailID = patientDetailID;
 		PatientID = patientID;
@@ -25,85 +24,40 @@ public class PatientDetail {
 		CheckDate = checkDate;
 	}
 	
-
-
-
 	public int getPatientDetailID() {
 		return PatientDetailID;
 	}
-
-
-
-
 	public void setPatientDetailID(int patientDetailID) {
 		PatientDetailID = patientDetailID;
 	}
-
-
-
-
 	public int getPatientID() {
 		return PatientID;
 	}
-
-
-
-
 	public void setPatientID(int patientID) {
 		PatientID = patientID;
 	}
-
-
-
-
 	public int getEmployeeID() {
 		return EmployeeID;
 	}
-
-
-
-
 	public void setEmployeeID(int employeeID) {
 		EmployeeID = employeeID;
 	}
-
-
-
-
 	public String getSymptom() {
 		return Symptom;
 	}
-
-
-
-
 	public void setSymptom(String symptom) {
 		Symptom = symptom;
 	}
-
-
-
-
 	public Date getCheckDate() {
 		return CheckDate;
 	}
-
-
-
-
 	public void setCheckDate(Date checkDate) {
 		CheckDate = checkDate;
 	}
-
-
-
-
 	public PatientDetail() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	
-
 	//load object
 	public Vector<Patient> GetAllPatientDetail(){
 		String query = String.format("SELECT * FROM %s", this.table);
@@ -121,8 +75,7 @@ public class PatientDetail {
 				int patientID = rs.getInt("PatientID");
 				int employeeID = rs.getInt("EmployeeID");
 				String symptom = rs.getString("Symptom");
-				Date checkDate = rs.getDate("DOB");
-				
+				Date checkDate = rs.getDate("DOB");		
 				
 				listPatientDetail.add(new PatientDetail(patientDetailID, patientID, employeeID, symptom, checkDate));			
 			}
@@ -150,7 +103,4 @@ public class PatientDetail {
 		}
 		return false;
 	}
-
-	
-
 }

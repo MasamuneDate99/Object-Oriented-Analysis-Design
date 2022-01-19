@@ -17,23 +17,15 @@ public class Role {
 	public int getRoleID() {
 		return RoleID;
 	}
-
-
 	public void setRoleID(int roleID) {
 		RoleID = roleID;
 	}
-
-
 	public String getRName() {
 		return RName;
 	}
-
-
 	public void setRName(String rName) {
 		RName = rName;
 	}
-
-
 	public Role(int roleID, String rName) {
 		RoleID = roleID;
 		RName = rName;
@@ -72,6 +64,4 @@ public class Role {
 //		
 //		
 //	}
-	
-
 }
