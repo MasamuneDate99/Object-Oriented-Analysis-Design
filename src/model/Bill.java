@@ -1,81 +1,153 @@
 package model;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+
+import connect.Connect;
+
 public class Bill {
-	private int billId;
-	private int employeeId;
-	private int patientId;
-	private String date;
-	private String paymentType;
-	private String status;
-	private int billDetailId;
-	private int medicineId;
-	private int medicineQuantity;
-	
-	public Bill(int billId, int employeeId, int patientId, String date, String paymentType, String status,
-			int billDetailId, int medicineId, int medicineQuantity) {
-		super();
-		this.billId = billId;
-		this.employeeId = employeeId;
-		this.patientId = patientId;
-		this.date = date;
-		this.paymentType = paymentType;
-		this.status = status;
-		this.billDetailId = billDetailId;
-		this.medicineId = medicineId;
-		this.medicineQuantity = medicineQuantity;
+	private int Bill_ID, EmployeeID, PatientID;
+	private Date DateTimeCreated;
+	private String PaymentType, Status;
+	private String table = "bill";
+	private Connect con = Connect.getConnection();
+
+	public Bill() {
+		// TODO Auto-generated constructor stub
 	}
-	public int getBillId() {
-		return billId;
+
+	public Bill(int bill_ID, int employeeID, int patientID, Date dateTimeCreated, String paymentType, String status) {
+		Bill_ID = bill_ID;
+		EmployeeID = employeeID;
+		PatientID = patientID;
+		DateTimeCreated = dateTimeCreated;
+		PaymentType = paymentType;
+		Status = status;
 	}
-	public void setBillId(int billId) {
-		this.billId = billId;
+
+	public int getBill_ID() {
+		return Bill_ID;
 	}
-	public int getEmployeeId() {
-		return employeeId;
+
+	public void setBill_ID(int bill_ID) {
+		Bill_ID = bill_ID;
 	}
-	public void setEmployeeId(int employeeId) {
-		this.employeeId = employeeId;
+
+	public int getEmployeeID() {
+		return EmployeeID;
 	}
-	public int getPatientId() {
-		return patientId;
+
+	public void setEmployeeID(int employeeID) {
+		EmployeeID = employeeID;
 	}
-	public void setPatientId(int patientId) {
-		this.patientId = patientId;
+
+	public int getPatientID() {
+		return PatientID;
 	}
-	public String getDate() {
-		return date;
+
+	public void setPatientID(int patientID) {
+		PatientID = patientID;
 	}
-	public void setDate(String date) {
-		this.date = date;
+
+	public Date getDateTimeCreated() {
+		return DateTimeCreated;
 	}
+
+	public void setDateTimeCreated(Date dateTimeCreated) {
+		DateTimeCreated = dateTimeCreated;
+	}
+
 	public String getPaymentType() {
-		return paymentType;
+		return PaymentType;
 	}
+
 	public void setPaymentType(String paymentType) {
-		this.paymentType = paymentType;
+		PaymentType = paymentType;
 	}
+
 	public String getStatus() {
-		return status;
+		return Status;
 	}
+
 	public void setStatus(String status) {
-		this.status = status;
+		Status = status;
 	}
-	public int getBillDetailId() {
-		return billDetailId;
+
+	// load object
+	public Vector<Bill> GetAllBill() {
+		String query = String.format("SELECT * FROM %s", this.table);
+
+		// menampung hasil dari select
+		ResultSet rs = con.executeQuery(query);
+
+		// return data dari db
+		Vector<Bill> listBill = new Vector<>();
+
+		// looping masukkin data ke vector
+		try {
+			while (rs.next()) {
+				int bill_ID = rs.getInt("Bill_ID");
+				int employeeID = rs.getInt("EmployeeID");
+				int patientID = rs.getInt("PatientID");
+				Date dateTimeCreated = rs.getDate("DateTimeCreated");
+				String paymentType = rs.getString("PaymentType");
+				String status = rs.getString("Status");
+
+				listBill.add(new Bill(bill_ID, employeeID, patientID, dateTimeCreated, paymentType, status));
+			}
+			return listBill;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
-	public void setBillDetailId(int billDetailId) {
-		this.billDetailId = billDetailId;
+
+	// insert object
+	public boolean insertBill() {
+		String query = String.format("INSERT INTO %s Values (NULL,?,?,?,?,?)", this.table);
+
+		PreparedStatement ps = con.prepareStatement(query);
+
+		try {
+			ps.setInt(1, EmployeeID);
+			ps.setInt(2, PatientID);
+			ps.setDate(3, DateTimeCreated);
+			ps.setString(4, PaymentType);
+			ps.setString(5, Status);
+			return ps.executeUpdate() == 1;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
-	public int getMedicineId() {
-		return medicineId;
+
+	// update object
+	public boolean updateMedicine() {
+		String query = String.format(
+				"UPDATE %s SET EmployeeID = ?, PatientID = ?, DateTimeCreated = ?, PaymentType = ?, Status = ? WHERE Bill_ID = ?",
+				this.table);
+
+		PreparedStatement ps = con.prepareStatement(query);
+
+		try {
+			ps.setInt(1, EmployeeID);
+			ps.setInt(2, PatientID);
+			ps.setDate(3, DateTimeCreated);
+			ps.setString(4, PaymentType);
+			ps.setString(5, Status);
+			ps.setInt(6, Bill_ID);
+
+			return ps.executeUpdate() == 1;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
-	public void setMedicineId(int medicineId) {
-		this.medicineId = medicineId;
-	}
-	public int getMedicineQuantity() {
-		return medicineQuantity;
-	}
-	public void setMedicineQuantity(int medicineQuantity) {
-		this.medicineQuantity = medicineQuantity;
-	}
+
 }
